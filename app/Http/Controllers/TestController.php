@@ -71,4 +71,37 @@ class TestController extends Controller
 
 
     }
+
+    public function sign1()
+    {
+        $sign=$_GET['sign'];
+        unset($_GET['sign']);
+        //字典排序
+        ksort($_GET);
+        print_r($_GET);
+
+        //拼接 待签名 字符串
+        $str = "";
+        foreach($_GET as $k=>$v){
+            $str .= $k."=".$v.'&';
+        }
+
+        //使用公钥验签
+        $str=rtrim($str,'&');
+        dd($str);
+        $pub_key=file_get_contents(storage_path('keys/pub.key'));
+        $status=openssl_verify($str,base64_decode($sign),$pub_key,OPENSSL_ALGO_SHA256);
+        var_dump($status);echo '<br>';
+
+        if($status){
+            echo 'success';
+        }else{
+            echo '失败';
+        }
+    }
+
+    public function b()
+    {
+
+    }
 }

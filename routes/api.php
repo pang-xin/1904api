@@ -19,6 +19,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::prefix('/')->middleware('ApiHeader')->group(function () {
     Route::post('/a', 'Api\ApiController@a');
 });
-Route::get('/brush','Api\ApiController@brush');
+Route::post('/brush','Api\ApiController@brush');
 Route::post('/index', 'Api\ApiController@index');
 Route::post('/create', 'Api\ApiController@create');

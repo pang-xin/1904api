@@ -19,3 +19,16 @@ Route::get('alipay/test','TestController@alipay');
 
 Route::get('/test/alipay/return','Alipay\PayController@aliReturn');
 Route::post('/test/alipay/notify','Alipay\PayController@notify');
+
+Route::prefix('/api')->middleware('Token')->group(function () {
+    Route::get('/sign1', 'TestController@sign1');
+});
+
+Route::post('api/login', 'Api\ApiController@login');
+Route::post('api/reg', 'Api\ApiController@reg');
+Route::get('api/getData', 'Api\ApiController@getData');
+
+
+Route::prefix('/')->middleware('ApiHeader')->group(function () {
+    Route::post('/b', 'TestController@b');
+});

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Model\Common;
 use Illuminate\Http\Request;
 use App\Model\User;
 use Illuminate\Support\Facades\Redis;
@@ -72,6 +73,49 @@ class ApiController extends Controller
     }
 
     public function a(){
-        
+
+    }
+
+    public function reg(Request $request)
+    {
+        $data = $request->all();
+        $url = "http://1905passport.com/user/reg";
+        $response = Common::curlPost($url,$data);
+        print_r($response);
+    }
+
+    public function login(Request $request)
+    {
+        $login_info = $request->all();
+        $url = "http://1905passport.com/user/login";
+        $response = Common::curlPost($url,$login_info);
+        print_r($response);
+    }
+
+    public function getData()
+    {
+        //接受token
+        $token = $_SERVER['HTTP_TOKEN'];
+        $user_id = $_SERVER['HTTP_UID'];
+
+        //请求possport
+        $url = "http://1905passport.com/user/auth";
+        $response = Common::curlPost($url,['user_id'=>$user_id,'token'=>$token]);
+
+        //鉴权通过
+        if($response['code']==0){
+            $data = 'yes';
+            $res = [
+                'code'=>200,
+                'msg'=>'ok',
+                'data'=>$data
+            ];
+        }else{
+            $res = [
+                'code'=>203,
+                'msg'=>'Not Valid!'
+            ];
+        }
+        return $res;
     }
 }
