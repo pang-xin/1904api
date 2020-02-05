@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redis;
 
 class TestController extends Controller
 {
@@ -102,6 +103,31 @@ class TestController extends Controller
 
     public function b()
     {
+        $data = [
+            'name'=>'zhangsan',
+            'age'=>'18'
+        ];
+        print_r($data);
+    }
 
+    public function test()
+    {
+        //当前token
+        $token = $_SERVER['HTTP_TOKEN'];
+        //当前url
+        $url=$_SERVER['REQUEST_URI'];
+        $key=md5($token . $url);
+
+        $count=Redis::get($key);
+        $time = 10;
+        if($count > 10){
+            echo '访问次数已上限，请'.$time.'秒在试';
+            Redis::expire($key,10);
+            die;
+        }
+        echo '访问次数:'.$count;
+        echo '<br>';
+        $count=Redis::incr($key);
+        echo 'count:'.$count;
     }
 }

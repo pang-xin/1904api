@@ -16,19 +16,24 @@ class ApiHeader
      */
     public function handle($request, Closure $next)
     {
-        $token = $request->input('token');
+        $token = $_SERVER['HTTP_TOKEN'];
+        if(isset($token)){
+            $current_url=$_SERVER['REQUEST_URI'];
+            $redis_key='str:count:u:'.$token.':url:'.md5($current_url);
 
-        $current_url=$_SERVER['REQUEST_URI'];
-        $redis_key='str:count:u:'.$token.':url:'.md5($current_url);
+            $count=Redis::get($redis_key);
+            if($count > 10){
+                $time = 60;
+                echo json_encode(['msg'=>'访问次数已上限，请停'.$time.'秒在试','error'=>203],JSON_UNESCAPED_UNICODE);
+                Redis::expire($redis_key,60);
+                die;
+            }
 
-        $count=Redis::get($redis_key);
-        if($count > 10){
-            echo '访问次数已上限，请停一会在试';
-            Redis::expire($redis_key,60);
-            die;
+            Redis::incr($redis_key);
+        }else{
+            echo json_encode(['msg'=>'token不能为空','error'=>201],JSON_UNESCAPED_UNICODE);
         }
 
-        $count=Redis::incr($redis_key);
         return $next($request);
     }
 }

@@ -24,7 +24,7 @@ class ApiController extends Controller
             $pass = $info->pwd;
             if (password_verify($pwd, $pass)) {
                 $token=md5($info['id'].time());
-                User::where(['id'=>$info['id']])->update(['token'=>$token]);
+                Redis::set('token',$token,3600);
                 return json_encode(['find'=>'登陆成功','code'=>'200','token'=>$token]);
             } else {
                 return json_encode(['find'=>'密码有误','code'=>'201']);

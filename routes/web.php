@@ -29,6 +29,8 @@ Route::post('api/reg', 'Api\ApiController@reg');
 Route::get('api/getData', 'Api\ApiController@getData');
 
 
-Route::prefix('/')->middleware('ApiHeader')->group(function () {
+Route::prefix('/')->middleware('Token')->group(function () {
     Route::post('/b', 'TestController@b');
 });
+
+Route::post('api/test', 'TestController@test');
