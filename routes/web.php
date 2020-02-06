@@ -29,7 +29,7 @@ Route::post('api/reg', 'Api\ApiController@reg');
 Route::get('api/getData', 'Api\ApiController@getData');
 
 
-Route::prefix('/')->middleware('Token')->group(function () {
+Route::prefix('/')->middleware('ApiHeader','Token')->group(function () {
     Route::post('/b', 'TestController@b');
 });
 

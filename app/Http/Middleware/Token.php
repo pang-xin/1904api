@@ -38,14 +38,11 @@ class Token
         ]);
 
         $json_data = $response->getBody();
-        dd($json_data);
         $info = json_decode($json_data,true);
-
         if($info['error']){
-            echo '错误信息：'.$info['msg'];
+            echo json_encode(['msg'=>''.$info['msg'],'error'=>'203'],JSON_UNESCAPED_UNICODE);
+            die;
         }
-        echo '个人中心';
-
 
         return $next($request);
     }
