@@ -110,6 +110,7 @@ class TestController extends Controller
         print_r($data);
     }
 
+    //防刷
     public function test()
     {
         //当前token

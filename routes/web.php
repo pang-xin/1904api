@@ -30,7 +30,11 @@ Route::get('api/getData', 'Api\ApiController@getData');
 
 
 Route::prefix('/')->middleware('ApiHeader','Token')->group(function () {
-    Route::post('/b', 'TestController@b');
+    Route::post('/b', 'TestController@b');//防刷测试
 });
 
 Route::post('api/test', 'TestController@test');
+
+
+Route::get('test/sign', 'Api\TestController@sign');
+
