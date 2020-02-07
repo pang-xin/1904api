@@ -56,4 +56,23 @@ class TestController extends Controller{
         $res_data = $res->getBody();
         echo $res_data;
     }
+
+    public function key_sign()
+    {
+        $data = 'hello';
+
+        //使用私钥加密
+        $priv_key = storage_path('keys/priv.key');
+        $pkeyid = openssl_pkey_get_private("file://" . $priv_key);
+        openssl_sign($data, $signature, $pkeyid);
+        openssl_free_key($pkeyid);
+        //base64编码签名
+
+        $sign = base64_encode($signature);
+        echo '签名：' . $sign;
+        echo '<br>';
+
+        $url = "http://1905passport.com/test/sign3?" . 'data=' . $data . '&sign=' . urlencode($sign);
+        echo $url;
+    }
 }

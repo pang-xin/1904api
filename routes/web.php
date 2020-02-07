@@ -38,4 +38,4 @@ Route::post('api/test', 'TestController@test');
 
 Route::get('test/sign', 'Api\TestController@sign');//签名
 Route::get('test/sign2', 'Api\TestController@sign2');//post签名
-Route::get('test/sign3', 'TestController@key_sign');//公钥签名
+Route::get('test/sign3', 'Api\TestController@key_sign');//公钥签名
