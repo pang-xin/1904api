@@ -3,10 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Model\Common;
-use Illuminate\Http\Request;
-use App\Model\User;
-use Illuminate\Support\Facades\Redis;
+use GuzzleHttp\Client;
 
 class TestController extends Controller{
     public function sign()
@@ -28,5 +25,35 @@ class TestController extends Controller{
         $res = file_get_contents($url);
         echo $res;
         echo '<hr>';
+    }
+
+    public function sign2()
+    {
+        $key = "ljx";
+
+        //签名数据
+        $data = [
+            'user_id'=>rand(11111,99999),
+            'name'=>'zhangsan',
+            'pwd'=>'123'
+        ];
+
+        $data_json = json_encode($data);
+
+        //计算签名
+        $sign = md5($data_json.$key);
+
+        //post验签
+        $client = new Client();
+        $url = "http://1905passport.com/test/sign2";
+        $res = $client->request('POST',$url,[
+            "form_params"=>[
+                "data"=>$data_json,
+                "sign"=>$sign
+            ]
+        ]);
+
+        $res_data = $res->getBody();
+        echo $res_data;
     }
 }

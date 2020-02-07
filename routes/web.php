@@ -36,5 +36,5 @@ Route::prefix('/')->middleware('ApiHeader','Token')->group(function () {
 Route::post('api/test', 'TestController@test');
 
 
-Route::get('test/sign', 'Api\TestController@sign');
-
+Route::get('test/sign', 'Api\TestController@sign');//签名
+Route::get('test/sign2', 'Api\TestController@sign2');//post签名
