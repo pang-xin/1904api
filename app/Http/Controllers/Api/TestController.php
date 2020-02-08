@@ -75,4 +75,21 @@ class TestController extends Controller{
         $url = "http://1905passport.com/test/sign3?" . 'data=' . $data . '&sign=' . urlencode($sign);
         echo $url;
     }
+
+    public function encrypt()
+    {
+        $data = 'hello word';
+
+        $method = "AES-256-CBC";
+        $key = "1905api";
+        $iv = "WUSD8796IDjhkchd";
+
+        $enc_data = openssl_encrypt($data, $method, $key, OPENSSL_RAW_DATA, $iv);
+        echo '加密：' . $enc_data;
+        echo "<br>";
+        //发送加密数据
+        $url = "http://1905passport.com/test/decrypt?data=" . urlencode(base64_encode($enc_data));
+        $res = file_get_contents($url);
+        echo $res;
+    }
 }
