@@ -92,4 +92,23 @@ class TestController extends Controller{
         $res = file_get_contents($url);
         echo $res;
     }
+
+    public function key_encrypt()
+    {
+        $data = "李佳鑫";
+
+        //使用非对称加密
+        $priv_key = storage_path('keys/priv.key');
+        $pkeyid = openssl_pkey_get_private("file://" . $priv_key);
+        openssl_private_encrypt($data,$encrypt,$pkeyid,OPENSSL_PKCS1_PADDING);
+
+        $str = base64_encode($encrypt);
+        echo '加密:'.$str;
+        echo "<br>";
+        //发送解密数据
+        $url = "http://1905passport.com/test/decrypt2?data=" . urlencode($str);
+        $res = file_get_contents($url);
+        echo $res;
+
+    }
 }

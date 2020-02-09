@@ -41,3 +41,5 @@ Route::get('test/sign2', 'Api\TestController@sign2');//post签名
 Route::get('test/sign3', 'Api\TestController@key_sign');//公钥签名
 
 Route::get('test/encrypt', 'Api\TestController@encrypt');//对称加密
+Route::get('test/encrypt2', 'Api\TestController@key_encrypt');//非对称加密
+
